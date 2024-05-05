@@ -1,5 +1,3 @@
-// components/results.tsx
-'use client';
 import { useState, useEffect } from 'react';
 
 interface Game {
@@ -10,14 +8,14 @@ interface Game {
     date?: Date;
 }
 
-
 const Results: React.FC = () => {
-    const [games, setGames] = useState([]);
+    // Define the state with the type Game[]
+    const [games, setGames] = useState<Game[]>([]);
 
     useEffect(() => {
         const eventSource = new EventSource('http://localhost:3002/events');
         eventSource.onmessage = (event) => {
-            const games = JSON.parse(event.data);
+            const games: Game[] = JSON.parse(event.data); // Ensure the parsed data matches the Game[] type
             setGames(games);
         };
 
