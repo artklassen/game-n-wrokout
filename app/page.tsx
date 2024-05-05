@@ -3,7 +3,7 @@
 import Results from '@/components/results';
 import GameInputs from '@/components/gameInputs';
 import '@/styles/tailwindcss/components/home.scss';
-import axios from 'axios';
+
 
 const Home: React.FC = () => {
   return (

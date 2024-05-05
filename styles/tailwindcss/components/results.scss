@@ -1,0 +1,29 @@
+.results-container {
+  margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; // This will distribute space evenly around the items
+  align-items: flex-start; // Align items at the start of the cross axis
+
+  .game-card {
+    background-color: #f9f9f9; // Light grey background
+    border: 1px solid #ccc; // Grey border
+    border-radius: 8px; // Rounded corners
+    padding: 20px;
+    margin: 10px;
+    width: 300px; // Fixed width for each card
+
+    p {
+      margin: 5px 0; // Vertical margin for paragraph spacing
+      color: #333; // Dark grey text color
+      font-size: 16px; // Slightly larger text
+    }
+
+    p.date {
+      text-align: center;
+      font-style: normal;
+      font-weight: bold;
+      color: #666; // Lighter grey for the date
+    }
+  }
+}
