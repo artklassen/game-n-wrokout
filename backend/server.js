@@ -13,17 +13,19 @@ mongoose.connect('mongodb://127.0.0.1:27017/game-n-workout');
 
 // MongoDB Model
 const Game = mongoose.model('Game', new mongoose.Schema({
+    user: String,
     game: String,
     exerciseName: String,
     exerciseAmount: Number,
     date: { type: Date, default: Date.now }
 }));
-console.log('hello eba')
+console.log('hello ebana')
 
 app.post('/api/form', async (req, res) => {
     try {
         // Create a new game instance using data from the request body
         const newGame = new Game({
+            user: req.body.user,
             game: req.body.game,
             exerciseName: req.body.exerciseName,
             exerciseAmount: req.body.exerciseAmount
@@ -37,17 +39,6 @@ app.post('/api/form', async (req, res) => {
         res.status(500).json({ message: 'Failed to process form data' });
     }
 });
-//THIS IS THE GET REQUEST ON LOAD WORKS
-// app.get('/api/games', async (req, res) => {
-//     try {
-//         const games = await Game.find();
-//         res.json(games);
-//     } catch (error) {
-//         console.error('Failed to retrieve data:', error);
-//         res.status(500).json({ message: 'Failed to retrieve data' });
-//     }
-// });
-
 
 app.get('/events', (req, res) => {
     res.setHeader('Content-Type', 'text/event-stream');

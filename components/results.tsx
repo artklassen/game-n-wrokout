@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 interface Game {
     _id: string;
+    user: string;
     game: string;
     exerciseName: string;
     exerciseAmount: number;
@@ -27,6 +28,7 @@ const Results: React.FC = () => {
             <h2>Games List</h2>
             {games.map((g, index) => (
                 <div key={index}>
+                    <p>User: {g.user}</p>
                     <p>Game: {g.game}</p>
                     <p>Exercise: {g.exerciseName} - {g.exerciseAmount}</p>
                 </div>
