@@ -5,7 +5,7 @@ import '@/styles/tailwindcss/components/home.scss';
 import axios from 'axios';
 
 const Home: React.FC = () => {
-    const [user, setUser] = useState<string>('');
+    const [username, setUser] = useState<string>('');
     const [game, setGame] = useState<string>('');
     const [exerciseName, setExerciseName] = useState<string>('');
     const [exerciseAmount, setExerciseAmount] = useState<number | ''>('');
@@ -14,7 +14,7 @@ const Home: React.FC = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post('//localhost:3002/api/form', { user, game, exerciseName, exerciseAmount });
+            const response = await axios.post('//localhost:3002/api/form', { username, game, exerciseName, exerciseAmount });
             console.log(response.data); // Log response from the server
             // Clear form fields
             setUser('');
@@ -34,7 +34,7 @@ const Home: React.FC = () => {
                 <div>
                     <label>
                         Who is Playing?:
-                        <input type="text" value={user} onChange={(e) => setUser(e.target.value)} />
+                        <input type="text" value={username} onChange={(e) => setUser(e.target.value)} />
                     </label>
                 </div>
                 <div>
