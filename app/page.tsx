@@ -1,5 +1,4 @@
 // pages/index.tsx
-'use client'
 import Results from '@/components/results';
 import GameInputs from '@/components/gameInputs';
 import '@/styles/tailwindcss/components/home.scss';

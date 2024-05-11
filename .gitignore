@@ -46,3 +46,4 @@ mongod.conf
 
 # Environment variables
 .env
+.vercel

@@ -1,5 +1,7 @@
+'use client'
 import { useState, useEffect } from 'react';
 import '@/styles/tailwindcss/components/results.scss';
+import getDataFromPostgress from "@/utils/getDataFromPostgress";
 
 interface Exercise {
     exerciseName: string;
@@ -37,25 +39,35 @@ const Results: React.FC = () => {
             const key = `${game.user}-${normalizedDate}`;
 
             if (!acc[key]) {
+                console.log('Creating new game entry:', game);
                 acc[key] = {
                     ...game,
                     date: normalizedDate ? new Date(normalizedDate) : undefined,
-                    exercises: [...game.exercises]
+                    exercises: []
                 };
             }
 
-            // Loop over each exercise in the incoming game
+            // Track seen exercises for this key
+            const seenExercises = new Set(acc[key].exercises.map(e => e.exerciseName));
+
             game.exercises.forEach(incomingExercise => {
-                const existingExercise = acc[key].exercises.find(e => e.exerciseName === incomingExercise.exerciseName);
-                if (existingExercise) {
-                    // Add the exercise amount if the exercise already exists
-                    existingExercise.exerciseAmount += incomingExercise.exerciseAmount;
+                // Check if the exercise has been seen in any prior games
+                if (seenExercises.has(incomingExercise.exerciseName)) {
+                    // Find existing exercise in the current game aggregation
+                    const existingExercise = acc[key].exercises.find(e => e.exerciseName === incomingExercise.exerciseName);
+                    if (existingExercise) {
+                        console.log(`Adding amount ${incomingExercise.exerciseAmount} to existing exercise ${existingExercise.exerciseName}`);
+                        existingExercise.exerciseAmount += incomingExercise.exerciseAmount;
+                    }
                 } else {
-                    // Otherwise, add the new exercise to the list
+                    // It's the first occurrence in the incoming data
+                    console.log(`Adding new exercise entry: ${incomingExercise.exerciseName}`);
                     acc[key].exercises.push({
                         exerciseName: incomingExercise.exerciseName,
                         exerciseAmount: incomingExercise.exerciseAmount
                     });
+                    // Mark this exercise as seen
+                    seenExercises.add(incomingExercise.exerciseName);
                 }
             });
 
@@ -65,16 +77,20 @@ const Results: React.FC = () => {
         return Object.values(aggregatedGames);
     };
 
+
+
+
     useEffect(() => {
         const eventSource = new EventSource('http://localhost:3002/events');
         eventSource.onmessage = (event) => {
+            console.log("Incoming data:", event.data);
             const incomingGames = JSON.parse(event.data);
-            const newGames = incomingGames.map((game: { exerciseName: any; exerciseAmount: any; }) => ({
+            const newGames = incomingGames.map((game: { exercise_name: any; exercise_amount: any; }) => ({
                 ...game,
                 // Construct the exercises array using the exerciseName and exerciseAmount, if they exist
-                exercises: game.exerciseName && game.exerciseAmount ? [{
-                    exerciseName: game.exerciseName,
-                    exerciseAmount: game.exerciseAmount
+                exercises: game.exercise_name && game.exercise_amount ? [{
+                    exerciseName: game.exercise_name,
+                    exerciseAmount: game.exercise_amount
                 }] : []
             }));
             const aggregatedGames = aggregateGames(newGames);
@@ -88,11 +104,10 @@ const Results: React.FC = () => {
     return (
         <div className='results-container'>
             {games.map((g, index) => {
-                console.log('Rendering game:', g); // Log each game being rendered
                 return (
                     <div className='game-card' key={index}>
                         <p className='date'>Date: {g.date ? g.date.toISOString().split('T')[0] : 'No date provided'}</p>
-                        <p>User: {g.user}</p>
+                        <p>User: {g.username}</p>
                         <p>Game: {g.game}</p>
                         <p>Exercise count: {g.exercises.length}</p>
                         {g.exercises.length > 0 && <p>Exercises:</p>} {/* Updated condition */}
@@ -102,7 +117,6 @@ const Results: React.FC = () => {
                     </div>
                 );
             })}
-
         </div>
 
     );
