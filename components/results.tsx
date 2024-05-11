@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
 import '@/styles/tailwindcss/components/results.scss';
-import getDataFromPostgress from "@/utils/getDataFromPostgress";
 
 interface Exercise {
     exerciseName: string;
@@ -36,7 +35,7 @@ const Results: React.FC = () => {
     const aggregateGames = (incomingGames: Game[]) => {
         const aggregatedGames = incomingGames.reduce<AggregatedGames>((acc, game) => {
             const normalizedDate = normalizeDate(game.date);
-            const key = `${game.user}-${normalizedDate}`;
+            const key = `${game.username}-${normalizedDate}`;
 
             if (!acc[key]) {
                 console.log('Creating new game entry:', game);
