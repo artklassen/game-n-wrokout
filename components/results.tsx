@@ -10,7 +10,7 @@ interface Exercise {
 
 interface Game {
     _id: string;
-    user: string;
+    username: string;
     game: string;
     exercises: Exercise[];
     date?: Date;
@@ -76,9 +76,6 @@ const Results: React.FC = () => {
 
         return Object.values(aggregatedGames);
     };
-
-
-
 
     useEffect(() => {
         const eventSource = new EventSource('http://localhost:3002/events');
