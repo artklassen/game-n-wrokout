@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react';
 import '@/styles/tailwindcss/components/results.scss';
-import getDataFromPostgress from "@/utils/getDataFromPostgress";
 
 interface Exercise {
     exerciseName: string;
