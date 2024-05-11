@@ -4,6 +4,10 @@ import { useState, FormEvent } from 'react';
 import '@/styles/tailwindcss/components/home.scss';
 import axios from 'axios';
 
+
+// Use environment variable to determine the API URL
+const apiBaseUrl = process.env.REACT_APP_API_URL;
+
 const Home: React.FC = () => {
     const [username, setUser] = useState<string>('');
     const [game, setGame] = useState<string>('');
@@ -14,7 +18,9 @@ const Home: React.FC = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post('//localhost:3002/api/form', { username, game, exerciseName, exerciseAmount });
+            const response = await axios.post(`${apiBaseUrl}/api/form`, {
+                username, game, exerciseName, exerciseAmount
+            });
             console.log(response.data); // Log response from the server
             // Clear form fields
             setUser('');

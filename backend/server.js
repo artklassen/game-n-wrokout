@@ -6,7 +6,7 @@ const app = express();
 require('dotenv').config();
 
 // Choose the correct database URL based on the environment
-const databaseUrl = process.env.NODE_ENV === 'production' ? process.env.DATABASE_URL_PROD : process.env.DATABASE_URL;
+const databaseUrl = process.env.NODE_ENV === 'production' ? process.env.DATABASE_URL_PROD : process.env.DATABASE_URL_LOCAL;
 
 console.log('Database URL:', databaseUrl);
 
