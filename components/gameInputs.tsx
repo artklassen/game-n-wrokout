@@ -8,6 +8,8 @@ import axios from 'axios';
 // Use environment variable to determine the API URL
 const apiBaseUrl = process.env.REACT_APP_API_URL;
 
+console.log('API Base URL:', process.env.REACT_APP_API_URL);
+
 const Home: React.FC = () => {
     const [username, setUser] = useState<string>('');
     const [game, setGame] = useState<string>('');
