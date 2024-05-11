@@ -5,16 +5,19 @@ const app = express();
 
 require('dotenv').config();
 
-console.log('Database URL:', process.env.DATABASE_URL);
+// Choose the correct database URL based on the environment
+const databaseUrl = process.env.NODE_ENV === 'production' ? process.env.DATABASE_URL_PROD : process.env.DATABASE_URL_LOCAL;
+
+console.log('Database URL:', databaseUrl);
 
 app.use(bodyParser.json());
 
 const cors = require('cors');
 app.use(cors());
 
-// Setup PostgreSQL connection
+// Setup PostgreSQL connection using the appropriate URL
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL // Ensure this environment variable is set in your environment
+    connectionString: databaseUrl
 });
 
 // Log connection and test simple query
