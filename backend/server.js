@@ -13,6 +13,7 @@ console.log('Database URL:', databaseUrl);
 app.use(bodyParser.json());
 
 const cors = require('cors');
+app.options('*', cors()); // Enable preflight requests for all routes if needed
 app.use(cors());
 
 // Setup PostgreSQL connection using the appropriate URL
